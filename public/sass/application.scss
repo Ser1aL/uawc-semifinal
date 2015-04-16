@@ -1,0 +1,29 @@
+@import "bootstrap_variables";
+@import "base";
+
+.top-margin-2 {
+  margin-top: 20px;
+}
+
+.top-margin-4 {
+  margin-top: 40px;
+}
+
+.bot-margin-1 {
+  margin-bottom: 10px;
+}
+
+.file-caption.kv-fileinput-caption {
+  float: left;
+  width: 241px;
+  margin-right: 6px;
+}
+
+.form-control[name="torrent_link"] {
+  width: 342px;
+  margin-right: 6px;
+}
+
+.info-wrapper {
+
+}

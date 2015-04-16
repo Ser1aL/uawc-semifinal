@@ -1,0 +1,185 @@
+%form.form-horizontal.top-margin-2{ action: '/build_torrent', method: 'POST' }
+  -# Announce
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[announce]' } Announce
+    .col-sm-6
+      %input.form-control{ placeholder: 'http://example.com', type: 'text', name: 'torrent_file[announce]', value: torrent_file.announce }
+    .col-sm-2
+
+  -# Announce list
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[announce-list]' } Announce List
+    .col-sm-6
+      - if torrent_file.announce_list
+        - torrent_file.announce_list.each do |announce_url|
+          .row.bot-margin-1
+            .col-sm-12
+              %input.form-control{placeholder: 'Add announce url', type: 'text', name: 'torrent_file[announce-list][]', value: announce_url }
+      .row
+        .col-sm-12
+          %input.form-control{placeholder: 'Add announce url', type: 'text', name: 'torrent_file[announce-list][]' }
+    .col-sm-2
+
+  -# Nodes
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[nodes]' } Nodes
+    .col-sm-6
+      - if torrent_file.nodes
+        - torrent_file.nodes.each do |node|
+          .row.bot-margin-1
+            .col-sm-12
+              %input.form-control{placeholder: 'Add node', type: 'text', name: 'torrent_file[node][]', value: node }
+      .row
+        .col-sm-12
+          %input.form-control{placeholder: 'Add node', type: 'text', name: 'torrent_file[node][]' }
+    .col-sm-2
+
+  -# HTTP seeds
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[httpseeds]' } HTTP Seeds
+    .col-sm-6
+      - if torrent_file.httpseeds
+        - torrent_file.httpseeds.each do |httpseed|
+          .row.bot-margin-1
+            .col-sm-12
+              %input.form-control{placeholder: 'Add HTTP seed', type: 'text', name: 'torrent_file[httpseeds][]', value: httpseed }
+      .row
+        .col-sm-12
+          %input.form-control{placeholder: 'Add HTTP seed', type: 'text', name: 'torrent_file[httpseeds][]' }
+
+    .col-sm-2
+
+  -# Private
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[private]' } Private
+    .col-sm-6
+      %label.radio-inline
+        %input{ type: 'radio', name: 'torrent_file[private]', value: 1, checked: torrent_file.private == 1 } Yes
+      %label.radio-inline
+        %input{ type: 'radio', name: 'torrent_file[private]', value: 0, checked: torrent_file.private == 0 } No
+    .col-sm-2
+
+  -# Comment
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[comment]' } Comment
+    .col-sm-6
+      %input.form-control{ placeholder: 'Some text ...', type: 'text', name: 'torrent_file[comment]', value: torrent_file.comment }
+    .col-sm-2
+
+  -# Created By
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[created by]' } Created by
+    .col-sm-6
+      %input.form-control{ placeholder: 'The tool created this torrent file', type: 'text', name: 'torrent_file[created by]', value: torrent_file.created_by }
+    .col-sm-2
+
+  -# Creation date
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[creation date]' } Creation date
+    .col-sm-6
+      %input.form-control{ placeholder: 'UNIX Epoch time of creation time', type: 'text', name: 'torrent_file[creation date]', value: torrent_file.creation_date }
+    .col-sm-2
+
+  -# Publisher
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[publisher]' } Publisher
+    .col-sm-6
+      %input.form-control{ placeholder: 'Torrent publisher', type: 'text', name: 'torrent_file[publisher]', value: torrent_file.publisher }
+    .col-sm-2
+
+  -# Publisher URL
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[publisher-url]' } Publisher URL
+    .col-sm-6
+      %input.form-control{ placeholder: 'Torrent publisher URL', type: 'text', name: 'torrent_file[publisher-url]', value: torrent_file.publisher_url }
+    .col-sm-2
+
+  -# Encoding
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[encoding]' } Encoding
+    .col-sm-6
+      %input.form-control{ placeholder: 'Encoding', type: 'text', name: 'torrent_file[encoding]', value: torrent_file.encoding }
+    .col-sm-2
+
+  -# Info block
+  .info-wrapper
+    -## Length
+    .form-group
+      .col-sm-2
+      %label.col-sm-2.right-aligned{ for: 'torrent_file[info][length]' } [INFO] Length
+      .col-sm-6
+        %input.form-control{ placeholder: '???', type: 'text', name: 'torrent_file[info][length]', value: torrent_file.info['length'] }
+      .col-sm-2
+
+    -## Name
+    .form-group
+      .col-sm-2
+      %label.col-sm-2.right-aligned{ for: 'torrent_file[info][name]' } [INFO] Name
+      .col-sm-6
+        %input.form-control{ placeholder: 'Root path name', type: 'text', name: 'torrent_file[info][name]', value: torrent_file.info['name'] }
+      .col-sm-2
+
+    -## Files
+    .form-group
+      .col-sm-2
+      %label.col-sm-2.right-aligned{ for: 'torrent_file[info][files][]' } [INFO] Files
+      .col-sm-6
+        - if torrent_file.info['files']
+          - torrent_file.info['files'].each do |file|
+            .row.bot-margin-1
+              .col-sm-6
+                %input.form-control{ placeholder: 'File length', type: 'text', name: 'torrent_file[info][files][][length]', value: file['length'] }
+              .col-sm-6
+                %input.form-control{ placeholder: 'File path', type: 'text', name: 'torrent_file[info][files][][path]', value: file['path'] }
+        .row
+          .col-sm-6
+            %input.form-control{ placeholder: 'File length', type: 'text', name: 'torrent_file[info][files][][length]' }
+          .col-sm-6
+            %input.form-control{ placeholder: 'File path', type: 'text', name: 'torrent_file[info][files][][path]' }
+      .col-sm-2
+
+    -## Piece length
+    .form-group
+      .col-sm-2
+      %label.col-sm-2.right-aligned{ for: 'torrent_file[info][piece length]' } [INFO] Piece length
+      .col-sm-6
+        %input.form-control{ placeholder: 'Piece length', type: 'text', name: 'torrent_file[info][piece length]', value: torrent_file.info['piece length'] }
+      .col-sm-2
+
+    -## Pieces
+    .form-group
+      .col-sm-2
+      %label.col-sm-2.right-aligned{ for: 'torrent_file[info][pieces]' } [INFO] Pieces
+      .col-sm-6
+        %textarea.form-control{ rows: 8, placeholder: 'Piece length', type: 'text', name: 'torrent_file[info][pieces]' }= torrent_file.info['pieces']
+      .col-sm-2
+
+    -## Root hash
+    .form-group
+      .col-sm-2
+      %label.col-sm-2.right-aligned{ for: 'torrent_file[info][root hash]' } [INFO] Root hash / Hash tree
+      .col-sm-6
+        %input.form-control{ placeholder: 'Hash', type: 'text', name: 'torrent_file[info][root hash]', value: torrent_file.info['root hash'] }
+      .col-sm-2
+
+  .form-group
+    .col-sm-5
+    .col-sm-3
+      .output
+    .col-sm-1
+      .loader.hidden
+        %img{ src: '/assets/loader.gif' }
+    .col-sm-1
+      %button.btn.btn-default.pull-right.submit-button Generate
+    .col-sm-2
