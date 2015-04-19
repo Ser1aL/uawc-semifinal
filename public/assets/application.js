@@ -8,6 +8,12 @@ $(document).ready(function(){
   $('.main-tab-panel li a.active').tab('show');
 
   $("#inputFile").fileinput({'showPreview':false});
-  $('.tags_input').tagsinput()
 
+  $('.more-button').click(function (event) {
+    event.preventDefault();
+    var $form_group = $(this).closest('.form-group');
+    var $template = $form_group.find('.row.template').clone();
+    $template.removeClass('template').addClass('top-margin-1');
+    $form_group.find('.template-container').append($template.prop('outerHTML'));
+  });
 });

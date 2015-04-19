@@ -1,7 +1,9 @@
 - torrent_file = nil unless defined?(torrent_file)
 - error_message = nil unless defined?(error_message)
 
-.row= "Error: #{error_message}" if error_message
+- if error_message
+  .row
+    %pre.error Error: #{error_message}
 
 .row
   %div{role: 'tabpanel'}

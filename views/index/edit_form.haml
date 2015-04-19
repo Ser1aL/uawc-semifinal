@@ -4,54 +4,56 @@
     .col-sm-2
     %label.col-sm-2.right-aligned{ for: 'torrent_file[announce]' } Announce
     .col-sm-6
-      %input.form-control{ placeholder: 'http://example.com', type: 'text', name: 'torrent_file[announce]', value: torrent_file.announce }
+      %input.form-control{ placeholder: 'http://announce_url', type: 'text', name: 'torrent_file[announce]', value: torrent_file.announce }
     .col-sm-2
 
   -# Announce list
   .form-group
     .col-sm-2
     %label.col-sm-2.right-aligned{ for: 'torrent_file[announce-list]' } Announce List
-    .col-sm-6
+    .col-sm-6.template-container
       - if torrent_file.announce_list
         - torrent_file.announce_list.each do |announce_url|
           .row.bot-margin-1
             .col-sm-12
-              %input.form-control{placeholder: 'Add announce url', type: 'text', name: 'torrent_file[announce-list][]', value: announce_url }
-      .row
+              %input.form-control{placeholder: '["http://announce_url"]', type: 'text', name: 'torrent_file[announce-list][]', value: announce_url }
+      .row.template
         .col-sm-12
-          %input.form-control{placeholder: 'Add announce url', type: 'text', name: 'torrent_file[announce-list][]' }
+          %input.form-control{placeholder: '["http://announce_url"]', type: 'text', name: 'torrent_file[announce-list][]' }
     .col-sm-2
+      %button.more-button.btn.btn-success +
 
   -# Nodes
   .form-group
     .col-sm-2
     %label.col-sm-2.right-aligned{ for: 'torrent_file[nodes]' } Nodes
-    .col-sm-6
+    .col-sm-6.template-container
       - if torrent_file.nodes
         - torrent_file.nodes.each do |node|
           .row.bot-margin-1
             .col-sm-12
-              %input.form-control{placeholder: 'Add node', type: 'text', name: 'torrent_file[node][]', value: node }
-      .row
+              %input.form-control{placeholder: '["IP or DNS", port]', type: 'text', name: 'torrent_file[nodes][]', value: node }
+      .row.template
         .col-sm-12
-          %input.form-control{placeholder: 'Add node', type: 'text', name: 'torrent_file[node][]' }
+          %input.form-control{placeholder: '["IP or DNS", port]', type: 'text', name: 'torrent_file[nodes][]' }
     .col-sm-2
+      %button.more-button.btn.btn-success +
 
   -# HTTP seeds
   .form-group
     .col-sm-2
     %label.col-sm-2.right-aligned{ for: 'torrent_file[httpseeds]' } HTTP Seeds
-    .col-sm-6
+    .col-sm-6.template-container
       - if torrent_file.httpseeds
         - torrent_file.httpseeds.each do |httpseed|
           .row.bot-margin-1
             .col-sm-12
-              %input.form-control{placeholder: 'Add HTTP seed', type: 'text', name: 'torrent_file[httpseeds][]', value: httpseed }
-      .row
+              %input.form-control{placeholder: "seed_url", type: 'text', name: 'torrent_file[httpseeds][]', value: httpseed }
+      .row.template
         .col-sm-12
-          %input.form-control{placeholder: 'Add HTTP seed', type: 'text', name: 'torrent_file[httpseeds][]' }
-
+          %input.form-control{placeholder: "seed_url", type: 'text', name: 'torrent_file[httpseeds][]' }
     .col-sm-2
+      %button.more-button.btn.btn-success +
 
   -# Private
   .form-group
@@ -59,9 +61,9 @@
     %label.col-sm-2.right-aligned{ for: 'torrent_file[private]' } Private
     .col-sm-6
       %label.radio-inline
-        %input{ type: 'radio', name: 'torrent_file[private]', value: 1, checked: torrent_file.private == 1 } Yes
+        %input{ type: 'radio', name: 'torrent_file[private]', value: 1, checked: torrent_file.private.to_i == 1 } Yes
       %label.radio-inline
-        %input{ type: 'radio', name: 'torrent_file[private]', value: 0, checked: torrent_file.private == 0 } No
+        %input{ type: 'radio', name: 'torrent_file[private]', value: 0, checked: torrent_file.private.to_i == 0 } No
     .col-sm-2
 
   -# Comment
@@ -119,7 +121,7 @@
       .col-sm-2
       %label.col-sm-2.right-aligned{ for: 'torrent_file[info][length]' } [INFO] Length
       .col-sm-6
-        %input.form-control{ placeholder: '???', type: 'text', name: 'torrent_file[info][length]', value: torrent_file.info['length'] }
+        %input.form-control{ placeholder: 'Total length', type: 'text', name: 'torrent_file[info][length]', value: torrent_file.info['length'] }
       .col-sm-2
 
     -## Name
@@ -134,20 +136,21 @@
     .form-group
       .col-sm-2
       %label.col-sm-2.right-aligned{ for: 'torrent_file[info][files][]' } [INFO] Files
-      .col-sm-6
+      .col-sm-6.template-container
         - if torrent_file.info['files']
           - torrent_file.info['files'].each do |file|
             .row.bot-margin-1
               .col-sm-6
-                %input.form-control{ placeholder: 'File length', type: 'text', name: 'torrent_file[info][files][][length]', value: file['length'] }
+                %input.form-control{ placeholder: '1234567', type: 'text', name: 'torrent_file[info][files][][length]', value: file['length'] }
               .col-sm-6
-                %input.form-control{ placeholder: 'File path', type: 'text', name: 'torrent_file[info][files][][path]', value: file['path'] }
-        .row
+                %input.form-control{ placeholder: '["path", "to", "file"]', type: 'text', name: 'torrent_file[info][files][][path]', value: file['path'] }
+        .row.template
           .col-sm-6
-            %input.form-control{ placeholder: 'File length', type: 'text', name: 'torrent_file[info][files][][length]' }
+            %input.form-control{ placeholder: '1234567', type: 'text', name: 'torrent_file[info][files][][length]' }
           .col-sm-6
-            %input.form-control{ placeholder: 'File path', type: 'text', name: 'torrent_file[info][files][][path]' }
+            %input.form-control{ placeholder: '["path", "to", "file"]', type: 'text', name: 'torrent_file[info][files][][path]' }
       .col-sm-2
+        %button.more-button.btn.btn-success +
 
     -## Piece length
     .form-group

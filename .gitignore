@@ -4,7 +4,4 @@ log/*.log
 tmp/puma/state
 tmp/puma/pid
 tmp/resque/resque_worker*.pid
-public/sitemaps/*.gz
-public/sitemaps/*.rename
-public/sitemaps/*.xml
-public/sitemaps/*.gzip
+public/torrents/*.torrent

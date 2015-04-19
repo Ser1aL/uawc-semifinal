@@ -1,6 +1,10 @@
 @import "bootstrap_variables";
 @import "base";
 
+.top-margin-1 {
+  margin-top: 10px;
+}
+
 .top-margin-2 {
   margin-top: 20px;
 }
@@ -26,4 +30,8 @@
 
 .info-wrapper {
 
+}
+
+pre.error {
+  color: red;
 }
