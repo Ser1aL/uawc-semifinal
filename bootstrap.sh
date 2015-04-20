@@ -13,6 +13,11 @@ curl -L https://get.rvm.io | bash -s stable
 source /usr/local/rvm/scripts/rvm
 echo "source /usr/local/rvm/scripts/rvm" >> ~/.bashrc
 
+rvm install ruby-2.2.1
+rvm use ruby-2.2.1@uawc-semifinal --default --create
+
+bundle install
+
 cat >/etc/default/locale <<EOL
 LANG="en_US.UTF-8"
 LC_COLLATE="en_US.UTF-8"
@@ -24,11 +29,6 @@ LC_TIME="en_US.UTF-8"
 LC_ALL=
 EOL
 source /etc/default/locale
-
-rvm install ruby-2.2.1
-rvm use ruby-2.2.1@uawc-semifinal --default --create
-
-bundle install
 
 echo 'Starting services'
 cd /opt/uawc-semifinal && ./restart_server.sh
