@@ -13,6 +13,17 @@ curl -L https://get.rvm.io | bash -s stable
 source /usr/local/rvm/scripts/rvm
 echo "source /usr/local/rvm/scripts/rvm" >> ~/.bashrc
 
+cat >/etc/default/locale <<EOL
+LANG="en_US.UTF-8"
+LC_COLLATE="en_US.UTF-8"
+LC_CTYPE="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_MONETARY="en_US.UTF-8"
+LC_NUMERIC="en_US.UTF-8"
+LC_TIME="en_US.UTF-8"
+LC_ALL=
+EOL
+
 rvm install ruby-2.2.1
 rvm use ruby-2.2.1@uawc-semifinal --default --create
 
