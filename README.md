@@ -1,5 +1,5 @@
 # UA Web Challenge Application - Semifinal
-Torrent Editor. Application that allows easily modify torrent files
+Torrent Editor - application, that allows easily modify torrent files
 
 ## Installation
 ```
