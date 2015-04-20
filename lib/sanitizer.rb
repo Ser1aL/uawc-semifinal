@@ -1,5 +1,15 @@
 module Sanitizer
 
+  # == Sanitize form arguments
+  #
+  # Sanitize form method is implemented with an idea to transform
+  # the input to the consumable format.
+  # Executed on the highest level
+  #
+  # announce-list and nodes are received as json encoded attributes.
+  # Doing JSON.parse from them creates a valida ruby object.
+  # Rejects also the empty attributes and transform integer values to
+  # the correct format
   def sanitize_form(params)
     # clean up and restore announce-list and node list from forms
     %w(announce-list nodes).each do |array_attribute|
@@ -38,21 +48,21 @@ module Sanitizer
       key == 'length' && value == 0
     end
 
-    params.each do |key, value|
-      # key == 'httpseeds' && value && value.empty?
-    end
-
-    # convert integer attribute from string to numbers
+    # convert int attributes from string to numbers
     params['info']['length'] = params['info']['length'].to_i
     params['creation date'] = params['creation date'].to_i
     params['info']['piece length'] = params['info']['piece length'].to_i
 
-    # restore pieces from form
+    # restore pieces from the form
     params['info']['pieces'] = Base64.decode64(params['info']['pieces'])
 
     params
   end
 
+  # == Sanitize file contents
+  #
+  # Sanitize the contents of the received files.
+  # Executed inside TorrentFile object
   def sanitize_file_contents(contents)
     # clean up empty seeds
     if contents['httpseeds'] && contents['httpseeds'].is_a?(Array) && !contents['httpseeds'].empty?

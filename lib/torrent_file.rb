@@ -7,6 +7,15 @@ class TorrentFile
 
   STORE_DIR = 'public/torrents'
 
+  # == Initialize Torrent File object
+  #
+  # The process of initialization can be done in one of 3 ways:
+  #
+  #   * raw_contents: the input is a bencoded string
+  #   * filepath: the input is a file path
+  #   * parameters: the input is a direct set of file contents
+  #
+  # In all ways the result is sanitized and later valided
   def initialize(*args)
     raise ArgumentError, 'No input specified' if !args || args.empty?
 
@@ -30,7 +39,9 @@ class TorrentFile
     base64_encode_pieces!
   end
 
-  # runs the chain of validations
+  # == Validate
+  #
+  # Runs the chain of validations of already initialized internal attributes
   def validate!
     @validation_errors = {}
 
@@ -48,6 +59,7 @@ class TorrentFile
     validate_presence_of('pieces', @contents['info'], @validation_errors)
     validate_pieces_size('pieces', @contents['info'], @validation_errors)
     validate_length_and_pieces('length', @contents['info'], @validation_errors)
+    validate_files_format('files', @contents['info'], @validation_errors)
 
     # Additional fields
     validate_urls_array_of('httpseeds', @contents, @validation_errors)
@@ -81,24 +93,23 @@ class TorrentFile
     end
   end
 
-
-  def info
+  def info #:nodoc:
     @contents && @contents.is_a?(Hash) && @contents['info'] ? @contents['info'] : {}
   end
 
-  def base64_encode_pieces!
+  def base64_encode_pieces! #:nodoc:
     if @contents && @contents['info']
       @contents['info']['pieces'] = Base64.encode64(@contents['info']['pieces']).force_encoding('UTF-8')
     end
   end
 
-  def base64_decode_pieces!
+  def base64_decode_pieces! #:nodoc:
     if @contents && @contents['info']
       @contents['info']['pieces'] = Base64.decode64(@contents['info']['pieces']).strip.force_encoding('UTF-8')
     end
   end
 
-  def export
+  def export #:nodoc:
     name_suffix = Digest::SHA1.hexdigest(Time.now.to_s)[0..6]
     filename = @contents['info']['name'] + name_suffix + '.torrent'
     base64_decode_pieces!
@@ -108,13 +119,12 @@ class TorrentFile
     path
   end
 
-  def error_full_messages
+  def error_full_messages #:nodoc:
     @validation_errors.map do |attribute, validation_error|
       "#{attribute.to_s.capitalize} #{validation_error}"
     end
   end
 
-  # silently return nothing if argument doesn't exist in the @contents hash
   def method_missing(method, *args, &block)
     begin
       @contents[method.to_s.gsub(/_/, ' ')] || @contents[method.to_s.gsub(/_/, '-')] || nil

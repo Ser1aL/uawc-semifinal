@@ -1,6 +1,19 @@
+# = Torrent File Validations
+#
+# The validations listed here are something more specific to the
+# bit-torrent format
+#
+# Validations are built as chainable calls.
+# The object that is passed through is an errors hash.
+# In case of invalid input every validation call modifies the errors
+# hash by adding the element with the key of +attribute+ and value as a +message+
 module TorrentFileValidations
 
-  def validate_announce_list(attribute, object, errors) # array of single-string-element array
+  # == Validate announce list
+  #
+  # 'announce-list' should be an array of single-element-arrays
+  # Every single element inside internal array should be a string with a valid URL
+  def validate_announce_list(attribute, object, errors)
     if object && object.is_a?(Hash) && object[attribute] && object[attribute].is_a?(Array) &&
       !object[attribute].empty?
         if object[attribute].map(&:size).uniq == [1]
@@ -18,6 +31,11 @@ module TorrentFileValidations
     end
   end
 
+  # == Validate Pieces
+  #
+  # 'pieces' should be a concatenated string of SHA1 digests or hexdigests.
+  # This validation checks if the 'pieces' consists of 20-char strings
+  # +validate_length_and_pieces+ does the thorough check of length attributes
   def validate_pieces_size(attribute, object, errors)
     if object && object.is_a?(Hash) && object[attribute]
       if object[attribute].bytesize % 20 == 0
@@ -31,6 +49,17 @@ module TorrentFileValidations
     end
   end
 
+  # == Validate Length and Pieces attributes
+  #
+  # The method does thorough validation of length attributes of the torrent file
+  #
+  # According to documentation: http://en.wikipedia.org/wiki/Torrent_file length
+  # attributes of the torrent file are considered valid if condition is met:
+  #
+  #  * (ceil(length / piece length) * 160 = pieces size(bits)
+  #
+  # Here length is either the attribute defined in the root of +info+ or
+  # the sum of all file length attributes (if multiple files)
   def validate_length_and_pieces(attribute, object, errors)
     # attribute should be length but keeping the same structure
     if object && object.is_a?(Hash)
@@ -58,7 +87,17 @@ module TorrentFileValidations
     end
   end
 
-  def validate_files_format(attribute, object, errors)         # array of hashes, has keys length+path, path is an array of string
+  # == Validate File objects
+  #
+  # Validates the format of info/files attribute
+  #
+  # Checks:
+  #
+  #  * validate if +length+ doesn't exist if +files+ attribute is present
+  #  * validate if file paths are unique
+  #  * validate if file lengths are valid integer values
+  #  * validate if paths are string values
+  def validate_files_format(attribute, object, errors)
     if object && object.is_a?(Hash) && object[attribute]
       if object['length'].to_i > 0 && !object[attribute].empty?
         errors[attribute] = 'should not be defined when files are present'
@@ -86,11 +125,12 @@ module TorrentFileValidations
           errors[attribute] = 'paths should be unique'
         end
       end
-    else
-      errors[attribute] = 'is missing'
     end
   end
 
+  # == Validate HTTP Seeds
+  #
+  # Checks HTTP seeds to be an array of valid URLs
   def validate_httpseeds(attribute, object, errors)
     if object && object.is_a?(Hash) && object[attribute]
       object[attribute].each do |httpseed|
@@ -104,7 +144,10 @@ module TorrentFileValidations
     end
   end
 
-  def validate_nodes(attribute, object, errors)         # array of 2-element arrays: url+int
+  # == Validate Nodes
+  #
+  # Check if nodes is formed properly. Should be an array of ['URL', PORT]
+  def validate_nodes(attribute, object, errors)
     if object && object.is_a?(Hash) && object[attribute]
       object[attribute].each do |node_array|
         if node_array[0].is_a?(String) &&

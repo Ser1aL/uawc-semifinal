@@ -13,12 +13,12 @@ require_relative './lib/common_validations'
 require_relative './lib/torrent_file_validations'
 require_relative './lib/torrent_file'
 
-class UAWCSemifinal < Sinatra::Base
+class UAWCSemifinal < Sinatra::Base #:nodoc:
   include Sanitizer
 
   run! if app_file == $0
 
-  configure do
+  configure do #:nodoc:
     register Sinatra::Reloader
     set :server, :puma
     set :haml, { :format => :html5 }
@@ -28,6 +28,11 @@ class UAWCSemifinal < Sinatra::Base
     haml :index, layout: :'layouts/application'
   end
 
+  # == Upload file action
+  #
+  # Users land here when submit their file into the system.
+  # The action initiates the file by temporary path and
+  # renders the edit tab
   post '/upload_file' do
     begin
       torrent_file = TorrentFile.new(filepath: params['torrent_file'][:tempfile].path)
@@ -40,6 +45,11 @@ class UAWCSemifinal < Sinatra::Base
     }
   end
 
+  # == Submit link action
+  #
+  # Users come here when submit the remote link.
+  # The action initiates remote connection, downloads the file,
+  # builds the TorrentFile object and renders the edit tab.
   post '/upload_by_link' do
     file_link = params['torrent_link']
 
@@ -47,10 +57,10 @@ class UAWCSemifinal < Sinatra::Base
       begin
         contents = open(params['torrent_link']).read
         torrent_file = TorrentFile.new(raw_contents: contents)
-      rescue => any_http_error
-        error_message = 'Unable to download the file. Is the link correct?'
       rescue BEncode::DecodeError
         error_message = 'File has been downloaded but is not a valid .torrent file'
+      rescue => any_http_error
+        error_message = 'Unable to download the file. Is the link correct?'
       end
     else
       error_message = 'The link specified is not valid'
@@ -61,6 +71,29 @@ class UAWCSemifinal < Sinatra::Base
     }
   end
 
+  # == Process paste action
+  #
+  # Users land here when submit the direct bit-torrent code.
+  # The action builds the TorrentFile object and renders edit view
+  post '/process_paste' do
+    begin
+      torrent_file = TorrentFile.new(raw_contents: params['pasted_contents'])
+      error_messages = torrent_file.error_full_messages.join("\n")
+    rescue BEncode::DecodeError
+      error_messages = 'The input specified is not a valid bit-torrent encoded string'
+    end
+
+    haml :index, layout: :'layouts/application', locals: {
+      error_message: error_messages, torrent_file: torrent_file
+    }
+  end
+
+  # == Build torrent action
+  #
+  # The action sanitizes form input using +Sanitizer+ and builds correct arguments for
+  # TorrentFile object. The object initiates validations internally and if the file is
+  # valid, the action sends the file as application/x-bittorrent. If validations fail,
+  # user comes back to the edit form where he/she can continue editing
   post '/build_torrent' do
     torrent_file = TorrentFile.new(parameters: sanitize_form(params['torrent_file']))
 
@@ -84,16 +117,4 @@ class UAWCSemifinal < Sinatra::Base
     haml :index, layout: :'layouts/application', locals: locals
   end
 
-  post '/process_paste' do
-    begin
-      torrent_file = TorrentFile.new(raw_contents: params['pasted_contents'])
-      error_messages = torrent_file.error_full_messages.join("\n")
-    rescue BEncode::DecodeError
-      error_messages = 'The input specified is not a valid bit-torrent encoded string'
-    end
-
-    haml :index, layout: :'layouts/application', locals: {
-      error_message: error_messages, torrent_file: torrent_file
-    }
-  end
 end
