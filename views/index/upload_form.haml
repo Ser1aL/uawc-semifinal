@@ -12,43 +12,5 @@
     %label.col-sm-2{ for: 'torrent_link' } Paste a link
     .col-sm-6
       %input.form-control.pull-left{ type: 'text', name: 'torrent_link'}
-      %button.btn.btn-info.pull-left{ type: 'submit'} Submit a link and Edit contents
+      %button.btn.btn-warning.pull-left{ type: 'submit'} Submit a link and Edit contents
     .col-sm-3
-
-  -# .form-group
-  -#   .col-sm-2
-  -#   %label.col-sm-2.right-aligned{ for: 'additional[strict_scheme_rule]' } Scheme rule
-  -#   .col-sm-6
-  -#     %label.radio.left-margin
-  -#       %input{type: 'radio', name: 'additional[strict_scheme_rule]', checked: 'checked', value: 1} Strict: HTTP urls should not be selected for HTTPS input and vice versa
-  -#     %label.radio.left-margin
-  -#       %input{type: 'radio', name: 'additional[strict_scheme_rule]', value: 0 } I don't care, disregard url scheme and give me both HTTP and HTTPS links (can produce duplicates)
-  -#   .col-sm-2
-
-  -# .form-group
-  -#   .col-sm-2
-  -#   %label.col-sm-2.right-aligned{ for: 'additional[delivery_type]' } Receive sitemap by
-  -#   .col-sm-6
-  -#     %label.radio.left-margin
-  -#       %input.delivery-type{type: 'radio', name: 'additional[delivery_type]', checked: 'checked', value: 'direct_link'} Direct Link
-  -#     %label.radio.left-margin
-  -#       %input.delivery-type{type: 'radio', name: 'additional[delivery_type]', value: 'email' } Email
-  -#   .col-sm-2
-
-  -# .form-group.hidden.email-group
-  -#   .col-sm-1
-  -#   %label.col-sm-3.right-aligned{ for: 'additional[email]' } Enter your email address
-  -#   .col-sm-6
-  -#     %input.form-control{ placeholder: 'email@example.com', type: 'email', name: 'additional[email]' }
-  -#   .col-sm-2
-
-  -# .form-group
-  -#   .col-sm-5
-  -#   .col-sm-3
-  -#     .output
-  -#   .col-sm-1
-  -#     .loader.hidden
-  -#       %img{ src: '/assets/loader.gif' }
-  -#   .col-sm-1
-  -#     %button.btn.btn-default.pull-right.submit-button Generate
-  -#   .col-sm-2

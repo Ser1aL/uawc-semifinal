@@ -48,7 +48,7 @@
     .col-sm-2
     %label.col-sm-2.right-aligned{ for: 'torrent_file[info][pieces]' } [INFO] Base64 encoded pieces
     .col-sm-6
-      %textarea.form-control{ rows: 8, placeholder: 'Piece length', type: 'text', name: 'torrent_file[info][pieces]' }= torrent_file.info['pieces']
+      %textarea.form-control{ rows: 8, placeholder: 'Base64 encoded pieces', type: 'text', name: 'torrent_file[info][pieces]' }= torrent_file.info['pieces']
     .col-sm-2
 
   -## Root hash
