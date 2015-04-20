@@ -23,6 +23,7 @@ LC_NUMERIC="en_US.UTF-8"
 LC_TIME="en_US.UTF-8"
 LC_ALL=
 EOL
+source /etc/default/locale
 
 rvm install ruby-2.2.1
 rvm use ruby-2.2.1@uawc-semifinal --default --create
