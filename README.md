@@ -13,7 +13,7 @@ If you want to modify pieces through UI, you can use services like:
 * https://www.base64decode.org/
 * https://www.base64encode.org/
 
-### Torrent Editor application has been tested using torrents from the next trackers:
+### Torrent Editor application has been tested using torrents from the next resources:
 - rutracker.org
 - lostfilm.tv
 - kinokopilka.tv
