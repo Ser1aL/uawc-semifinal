@@ -18,6 +18,10 @@ rvm use ruby-2.2.1@uawc-semifinal --default --create
 
 bundle install
 
+echo "======Debugging locales====="
+echo "======> locale before change====="
+locale -a
+echo "======changing====="
 cat >/etc/default/locale <<EOL
 LANG="en_US.UTF-8"
 LC_COLLATE="en_US.UTF-8"
@@ -29,10 +33,14 @@ LC_TIME="en_US.UTF-8"
 LC_ALL=
 EOL
 source /etc/default/locale
-
+echo "======> locale after change====="
+locale -a
+echo "======reloading shell====="
 # hard reload the shell for locale changes to take effect
 /bin/bash
-
+echo "======> locale after reload====="
+locale -a
+echo "============================"
 echo 'Starting services'
 cd /opt/uawc-semifinal && ./restart_server.sh
 echo 'Puma started!'
