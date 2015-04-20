@@ -1,8 +1,22 @@
-Pieces are Base64 + UTF-8 encoded for UI compatibility.
-You can use services like https://www.base64decode.org/ if you want to modify pieces.
+# UA Web Challenge Application - Semifinal
+Torrent Editor. Application that allows easily modify torrent files
 
-Service tested using torrent from next resources:
+## Installation
+```
+git clone https://github.com/Ser1aL/uawc-semifinal.git
+vagrant up
+```
+
+## Encodings note
+Pieces attribute is automatically encoding into Base64 + UTF-8 string for UI compatibility.
+If you want to modify pieces through UI, you can use services like:
+* https://www.base64decode.org/
+* https://www.base64encode.org/
+
+### Torrent Editor application has been tested using torrents from the next trackers:
 - rutracker.org
 - lostfilm.tv
 - kinokopilka.tv
 - archlinux.org
+- kickass.to
+- btscene.cc
