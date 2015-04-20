@@ -8,6 +8,7 @@ gem 'sinatra-contrib'
 gem 'bootstrap-sass'
 gem 'compass'
 gem 'uglifier'
+gem 'ipaddress'
 
 # view renderer
 gem 'haml'

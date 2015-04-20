@@ -1,5 +1,4 @@
 module CommonValidations
-
   def validate_presence_of(attribute, object, errors)
     if object && object.is_a?(Hash) && object[attribute] &&
       (object[attribute].is_a?(Fixnum) || !object[attribute].empty?)

@@ -1,6 +1,6 @@
 gem 'minitest'
 
-require_relative '../lib/bencoder'
+require_relative '../app'
 
 require 'minitest/autorun'
 require 'minitest'

@@ -27,6 +27,7 @@ GEM
     ffi (1.9.8)
     haml (4.0.6)
       tilt
+    ipaddress (0.8.0)
     json (1.8.2)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
@@ -74,6 +75,7 @@ DEPENDENCIES
   bootstrap-sass
   compass
   haml
+  ipaddress
   mail
   minitest
   pry

@@ -5,3 +5,4 @@ Service tested using torrent from next resources:
 - rutracker.org
 - lostfilm.tv
 - kinokopilka.tv
+- archlinux.org

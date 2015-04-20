@@ -1,5 +1,23 @@
 module TorrentFileValidations
 
+  def validate_announce_list(attribute, object, errors) # array of single-string-element array
+    if object && object.is_a?(Hash) && object[attribute] && object[attribute].is_a?(Array) &&
+      !object[attribute].empty?
+        if object[attribute].map(&:size).uniq == [1]
+          object[attribute].each do |announce_url|
+            if announce_url.first =~ URI.regexp
+              # good
+            else
+              errors[attribute] = 'has at least one invalid url'
+              break
+            end
+          end
+        else
+          errors[attribute] = 'should be an array of single string-type-element arrays'
+        end
+    end
+  end
+
   def validate_pieces_size(attribute, object, errors)
     if object && object.is_a?(Hash) && object[attribute]
       if object[attribute].bytesize % 20 == 0
@@ -40,19 +58,6 @@ module TorrentFileValidations
     end
   end
 
-  def validate_nodes(attribute, object, errors)         # array of 2-element arrays: url+int
-    if object && object.is_a?(Hash) && object[attribute]
-      object[attribute].each do |node_array|
-        if node_array[0].is_a?(String) && node_array[0] =~ URI.regexp &&
-          node_array[1].to_i.to_s == node_array[1].to_s
-          # good
-        else
-          errors[attribute] = "doesn't have a valid format. Should be an array of ['URL', PORT]"
-        end
-      end
-    end
-  end
-
   def validate_files_format(attribute, object, errors)         # array of hashes, has keys length+path, path is an array of string
     if object && object.is_a?(Hash) && object[attribute]
       if object['length'].to_i > 0 && !object[attribute].empty?
@@ -64,6 +69,7 @@ module TorrentFileValidations
             # good
           else
             errors[attribute] = 'length should be an integer value'
+            return
           end
 
           # validate path format
@@ -71,29 +77,17 @@ module TorrentFileValidations
             # good
           else
             errors[attribute] = 'path should be an array of strings'
+            return
           end
+        end
+
+        all_paths = object[attribute].map { |file| file['path'] }
+        if all_paths.uniq.size != all_paths.size
+          errors[attribute] = 'paths should be unique'
         end
       end
     else
       errors[attribute] = 'is missing'
-    end
-  end
-
-  def validate_announce_list(attribute, object, errors) # array of single-string-element array
-    if object && object.is_a?(Hash) && object[attribute] && object[attribute].is_a?(Array) &&
-      !object[attribute].empty?
-        if object[attribute].map(&:size).uniq == [1]
-          object[attribute].each do |announce_url|
-            if announce_url.first =~ URI.regexp
-              # good
-            else
-              errors[attribute] = 'has at least one invalid url'
-              break
-            end
-          end
-        else
-          errors[attribute] = 'should be an array of single string-type-element arrays'
-        end
     end
   end
 
@@ -105,6 +99,20 @@ module TorrentFileValidations
         else
           errors[attribute] = 'has at least one invalid url'
           break
+        end
+      end
+    end
+  end
+
+  def validate_nodes(attribute, object, errors)         # array of 2-element arrays: url+int
+    if object && object.is_a?(Hash) && object[attribute]
+      object[attribute].each do |node_array|
+        if node_array[0].is_a?(String) &&
+          (node_array[0] =~ URI.regexp || IPAddress.valid?(node_array[0])) &&
+          node_array[1].to_i.to_s == node_array[1].to_s
+          # good
+        else
+          errors[attribute] = "doesn't have a valid format. Should be an array of ['URL', PORT]"
         end
       end
     end

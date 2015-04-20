@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'sinatra/reloader'
 require 'mail'
 require 'pry'
+require 'ipaddress'
 require 'bencode'
 require 'open-uri'
 require 'haml'
@@ -28,12 +29,6 @@ class UAWCSemifinal < Sinatra::Base
   end
 
   post '/upload_file' do
-    # to give a small boost to the system
-    content_type = params['torrent_file'][:type]
-    unless content_type == 'application/octet-stream'
-      error_message = 'The file you specified is not a valid torrent file'
-    end
-
     begin
       torrent_file = TorrentFile.new(filepath: params['torrent_file'][:tempfile].path)
     rescue BEncode::DecodeError
