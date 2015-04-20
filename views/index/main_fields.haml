@@ -1,0 +1,71 @@
+-# Announce
+.form-group
+  .col-sm-2
+  %label.col-sm-2.right-aligned{ for: 'torrent_file[announce]' } Announce
+  .col-sm-6
+    %input.form-control{ placeholder: 'http://announce_url', type: 'text', name: 'torrent_file[announce]', value: torrent_file.announce }
+  .col-sm-2
+
+-# Announce list
+.form-group
+  .col-sm-2
+  %label.col-sm-2.right-aligned{ for: 'torrent_file[announce-list]' } Announce List
+  .col-sm-6.template-container
+    - if torrent_file.announce_list && !torrent_file.announce_list.empty?
+      - torrent_file.announce_list.each do |announce_url|
+        .row.bot-margin-1
+          .col-sm-12
+            %input.form-control{placeholder: '["http://announce_url"]', type: 'text', name: 'torrent_file[announce-list][]', value: announce_url }
+    .row.template
+      .col-sm-12
+        %input.form-control{placeholder: '["http://announce_url"]', type: 'text', name: 'torrent_file[announce-list][]' }
+  .col-sm-2
+    %button.more-button.btn.btn-success +
+
+-# Comment
+.form-group
+  .col-sm-2
+  %label.col-sm-2.right-aligned{ for: 'torrent_file[comment]' } Comment
+  .col-sm-6
+    %input.form-control{ placeholder: 'Some text ...', type: 'text', name: 'torrent_file[comment]', value: torrent_file.comment }
+  .col-sm-2
+
+-# Created By
+.form-group
+  .col-sm-2
+  %label.col-sm-2.right-aligned{ for: 'torrent_file[created by]' } Created by
+  .col-sm-6
+    %input.form-control{ placeholder: 'The tool created this torrent file', type: 'text', name: 'torrent_file[created by]', value: torrent_file.created_by }
+  .col-sm-2
+
+-# Creation date
+.form-group
+  .col-sm-2
+  %label.col-sm-2.right-aligned{ for: 'torrent_file[creation date]' } Creation date
+  .col-sm-6
+    %input.form-control{ placeholder: 'UNIX Epoch time of creation time', type: 'text', name: 'torrent_file[creation date]', value: torrent_file.creation_date }
+  .col-sm-2
+
+-# Publisher
+.form-group
+  .col-sm-2
+  %label.col-sm-2.right-aligned{ for: 'torrent_file[publisher]' } Publisher
+  .col-sm-6
+    %input.form-control{ placeholder: 'Torrent publisher', type: 'text', name: 'torrent_file[publisher]', value: torrent_file.publisher }
+  .col-sm-2
+
+-# Publisher URL
+.form-group
+  .col-sm-2
+  %label.col-sm-2.right-aligned{ for: 'torrent_file[publisher-url]' } Publisher URL
+  .col-sm-6
+    %input.form-control{ placeholder: 'Torrent publisher URL', type: 'text', name: 'torrent_file[publisher-url]', value: torrent_file.publisher_url }
+  .col-sm-2
+
+-# Encoding
+.form-group
+  .col-sm-2
+  %label.col-sm-2.right-aligned{ for: 'torrent_file[encoding]' } Encoding
+  .col-sm-6
+    %input.form-control{ placeholder: 'UTF-8', type: 'text', name: 'torrent_file[encoding]', value: torrent_file.encoding }
+  .col-sm-2

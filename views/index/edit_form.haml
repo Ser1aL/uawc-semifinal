@@ -1,180 +1,32 @@
 %form.form-horizontal.top-margin-2{ action: '/build_torrent', method: 'POST' }
-  -# Announce
-  .form-group
-    .col-sm-2
-    %label.col-sm-2.right-aligned{ for: 'torrent_file[announce]' } Announce
-    .col-sm-6
-      %input.form-control{ placeholder: 'http://announce_url', type: 'text', name: 'torrent_file[announce]', value: torrent_file.announce }
-    .col-sm-2
-
-  -# Announce list
-  .form-group
-    .col-sm-2
-    %label.col-sm-2.right-aligned{ for: 'torrent_file[announce-list]' } Announce List
-    .col-sm-6.template-container
-      - if torrent_file.announce_list
-        - torrent_file.announce_list.each do |announce_url|
-          .row.bot-margin-1
-            .col-sm-12
-              %input.form-control{placeholder: '["http://announce_url"]', type: 'text', name: 'torrent_file[announce-list][]', value: announce_url }
-      .row.template
-        .col-sm-12
-          %input.form-control{placeholder: '["http://announce_url"]', type: 'text', name: 'torrent_file[announce-list][]' }
-    .col-sm-2
-      %button.more-button.btn.btn-success +
-
-  -# Nodes
-  .form-group
-    .col-sm-2
-    %label.col-sm-2.right-aligned{ for: 'torrent_file[nodes]' } Nodes
-    .col-sm-6.template-container
-      - if torrent_file.nodes
-        - torrent_file.nodes.each do |node|
-          .row.bot-margin-1
-            .col-sm-12
-              %input.form-control{placeholder: '["IP or DNS", port]', type: 'text', name: 'torrent_file[nodes][]', value: node }
-      .row.template
-        .col-sm-12
-          %input.form-control{placeholder: '["IP or DNS", port]', type: 'text', name: 'torrent_file[nodes][]' }
-    .col-sm-2
-      %button.more-button.btn.btn-success +
-
-  -# HTTP seeds
-  .form-group
-    .col-sm-2
-    %label.col-sm-2.right-aligned{ for: 'torrent_file[httpseeds]' } HTTP Seeds
-    .col-sm-6.template-container
-      - if torrent_file.httpseeds
-        - torrent_file.httpseeds.each do |httpseed|
-          .row.bot-margin-1
-            .col-sm-12
-              %input.form-control{placeholder: "seed_url", type: 'text', name: 'torrent_file[httpseeds][]', value: httpseed }
-      .row.template
-        .col-sm-12
-          %input.form-control{placeholder: "seed_url", type: 'text', name: 'torrent_file[httpseeds][]' }
-    .col-sm-2
-      %button.more-button.btn.btn-success +
-
-  -# Private
-  .form-group
-    .col-sm-2
-    %label.col-sm-2.right-aligned{ for: 'torrent_file[private]' } Private
-    .col-sm-6
-      %label.radio-inline
-        %input{ type: 'radio', name: 'torrent_file[private]', value: 1, checked: torrent_file.private.to_i == 1 } Yes
-      %label.radio-inline
-        %input{ type: 'radio', name: 'torrent_file[private]', value: 0, checked: torrent_file.private.to_i == 0 } No
-    .col-sm-2
-
-  -# Comment
-  .form-group
-    .col-sm-2
-    %label.col-sm-2.right-aligned{ for: 'torrent_file[comment]' } Comment
-    .col-sm-6
-      %input.form-control{ placeholder: 'Some text ...', type: 'text', name: 'torrent_file[comment]', value: torrent_file.comment }
-    .col-sm-2
-
-  -# Created By
-  .form-group
-    .col-sm-2
-    %label.col-sm-2.right-aligned{ for: 'torrent_file[created by]' } Created by
-    .col-sm-6
-      %input.form-control{ placeholder: 'The tool created this torrent file', type: 'text', name: 'torrent_file[created by]', value: torrent_file.created_by }
-    .col-sm-2
-
-  -# Creation date
-  .form-group
-    .col-sm-2
-    %label.col-sm-2.right-aligned{ for: 'torrent_file[creation date]' } Creation date
-    .col-sm-6
-      %input.form-control{ placeholder: 'UNIX Epoch time of creation time', type: 'text', name: 'torrent_file[creation date]', value: torrent_file.creation_date }
-    .col-sm-2
-
-  -# Publisher
-  .form-group
-    .col-sm-2
-    %label.col-sm-2.right-aligned{ for: 'torrent_file[publisher]' } Publisher
-    .col-sm-6
-      %input.form-control{ placeholder: 'Torrent publisher', type: 'text', name: 'torrent_file[publisher]', value: torrent_file.publisher }
-    .col-sm-2
-
-  -# Publisher URL
-  .form-group
-    .col-sm-2
-    %label.col-sm-2.right-aligned{ for: 'torrent_file[publisher-url]' } Publisher URL
-    .col-sm-6
-      %input.form-control{ placeholder: 'Torrent publisher URL', type: 'text', name: 'torrent_file[publisher-url]', value: torrent_file.publisher_url }
-    .col-sm-2
-
-  -# Encoding
-  .form-group
-    .col-sm-2
-    %label.col-sm-2.right-aligned{ for: 'torrent_file[encoding]' } Encoding
-    .col-sm-6
-      %input.form-control{ placeholder: 'Encoding', type: 'text', name: 'torrent_file[encoding]', value: torrent_file.encoding }
-    .col-sm-2
+  -# Frequently used fields
+  = haml :'index/main_fields', locals: { torrent_file: torrent_file }
 
   -# Info block
-  .info-wrapper
-    -## Length
-    .form-group
-      .col-sm-2
-      %label.col-sm-2.right-aligned{ for: 'torrent_file[info][length]' } [INFO] Length
-      .col-sm-6
-        %input.form-control{ placeholder: 'Total length', type: 'text', name: 'torrent_file[info][length]', value: torrent_file.info['length'] }
-      .col-sm-2
+  = haml :'index/info_fields', locals: { torrent_file: torrent_file }
 
-    -## Name
-    .form-group
-      .col-sm-2
-      %label.col-sm-2.right-aligned{ for: 'torrent_file[info][name]' } [INFO] Name
-      .col-sm-6
-        %input.form-control{ placeholder: 'Root path name', type: 'text', name: 'torrent_file[info][name]', value: torrent_file.info['name'] }
-      .col-sm-2
+  -# Advanced fields
+  = haml :'index/additional_fields', locals: { torrent_file: torrent_file }
 
-    -## Files
-    .form-group
-      .col-sm-2
-      %label.col-sm-2.right-aligned{ for: 'torrent_file[info][files][]' } [INFO] Files
-      .col-sm-6.template-container
-        - if torrent_file.info['files']
-          - torrent_file.info['files'].each do |file|
-            .row.bot-margin-1
-              .col-sm-6
-                %input.form-control{ placeholder: '1234567', type: 'text', name: 'torrent_file[info][files][][length]', value: file['length'] }
-              .col-sm-6
-                %input.form-control{ placeholder: '["path", "to", "file"]', type: 'text', name: 'torrent_file[info][files][][path]', value: file['path'] }
-        .row.template
-          .col-sm-6
-            %input.form-control{ placeholder: '1234567', type: 'text', name: 'torrent_file[info][files][][length]' }
-          .col-sm-6
-            %input.form-control{ placeholder: '["path", "to", "file"]', type: 'text', name: 'torrent_file[info][files][][path]' }
-      .col-sm-2
-        %button.more-button.btn.btn-success +
+  .form-group.delivery-type-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'delivery_type' } File delivery
+    .col-sm-6
+      %label.radio-inline
+        %input{ type: 'radio', name: 'delivery_type', value: 'email' } By email
+      %label.radio-inline
+        %input{ type: 'radio', name: 'delivery_type', value: 'direct', checked: :checked } Directly
+    .col-sm-2
 
-    -## Piece length
-    .form-group
-      .col-sm-2
-      %label.col-sm-2.right-aligned{ for: 'torrent_file[info][piece length]' } [INFO] Piece length
-      .col-sm-6
-        %input.form-control{ placeholder: 'Piece length', type: 'text', name: 'torrent_file[info][piece length]', value: torrent_file.info['piece length'] }
-      .col-sm-2
+  .form-group.email.hidden
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'email' } Email
+    .col-sm-6.template-container
+      .row
+        .col-sm-12
+          %input.form-control{placeholder: "Email", type: 'email', name: 'email' }
+    .col-sm-2
 
-    -## Pieces
-    .form-group
-      .col-sm-2
-      %label.col-sm-2.right-aligned{ for: 'torrent_file[info][pieces]' } [INFO] Pieces
-      .col-sm-6
-        %textarea.form-control{ rows: 8, placeholder: 'Piece length', type: 'text', name: 'torrent_file[info][pieces]' }= torrent_file.info['pieces']
-      .col-sm-2
-
-    -## Root hash
-    .form-group
-      .col-sm-2
-      %label.col-sm-2.right-aligned{ for: 'torrent_file[info][root hash]' } [INFO] Root hash / Hash tree
-      .col-sm-6
-        %input.form-control{ placeholder: 'Hash', type: 'text', name: 'torrent_file[info][root hash]', value: torrent_file.info['root hash'] }
-      .col-sm-2
 
   .form-group
     .col-sm-5

@@ -1,0 +1,10 @@
+%form.form-horizontal.top-margin-2{ action: '/process_paste', method: 'POST' }
+  .form-group
+    .col-sm-12
+      %textarea.form-control{ rows: 22, placeholder: 'Paste contents ...', type: 'text', name: 'pasted_contents' }
+
+
+  .form-group
+    .col-sm-10
+    .col-sm-2
+      %button.btn.btn-default.pull-right.submit-button Submit data and edit result

@@ -1,0 +1,60 @@
+.well.info-wrapper
+  -## Length
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[info][length]' } [INFO] Length
+    .col-sm-6
+      %input.form-control{ placeholder: 'Total length', type: 'text', name: 'torrent_file[info][length]', value: torrent_file.info['length'] }
+    .col-sm-2
+
+  -## Name
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[info][name]' } [INFO] Name
+    .col-sm-6
+      %input.form-control{ placeholder: 'Root path name', type: 'text', name: 'torrent_file[info][name]', value: torrent_file.info['name'] }
+    .col-sm-2
+
+  -## Files
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[info][files][]' } [INFO] Files (length / path array)
+    .col-sm-6.template-container
+      - if torrent_file.info['files']
+        - torrent_file.info['files'].each do |file|
+          .row.bot-margin-1
+            .col-sm-6
+              %input.form-control{ placeholder: '1234567', type: 'text', name: 'torrent_file[info][files][][length]', value: file['length'] }
+            .col-sm-6
+              %input.form-control{ placeholder: '["path", "to", "file"]', type: 'text', name: 'torrent_file[info][files][][path]', value: file['path'] }
+      .row.template
+        .col-sm-6
+          %input.form-control{ placeholder: '1234567', type: 'text', name: 'torrent_file[info][files][][length]' }
+        .col-sm-6
+          %input.form-control{ placeholder: '["path", "to", "file"]', type: 'text', name: 'torrent_file[info][files][][path]' }
+    .col-sm-2
+      %button.more-button.btn.btn-success +
+
+  -## Piece length
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[info][piece length]' } [INFO] Piece length
+    .col-sm-6
+      %input.form-control{ placeholder: 'Piece length', type: 'text', name: 'torrent_file[info][piece length]', value: torrent_file.info['piece length'] }
+    .col-sm-2
+
+  -## Pieces
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[info][pieces]' } [INFO] Base64 encoded pieces
+    .col-sm-6
+      %textarea.form-control{ rows: 8, placeholder: 'Piece length', type: 'text', name: 'torrent_file[info][pieces]' }= torrent_file.info['pieces']
+    .col-sm-2
+
+  -## Root hash
+  .form-group
+    .col-sm-2
+    %label.col-sm-2.right-aligned{ for: 'torrent_file[info][root hash]' } [INFO] Root hash / Hash tree
+    .col-sm-6
+      %input.form-control{ placeholder: 'Hash', type: 'text', name: 'torrent_file[info][root hash]', value: torrent_file.info['root hash'] }
+    .col-sm-2

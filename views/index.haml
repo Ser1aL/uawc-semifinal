@@ -1,9 +1,14 @@
 - torrent_file = nil unless defined?(torrent_file)
 - error_message = nil unless defined?(error_message)
+- success_message = nil unless defined?(success_message)
 
-- if error_message
+- if success_message && !success_message.empty?
   .row
-    %pre.error Error: #{error_message}
+    %pre.success= success_message
+
+- if error_message && !error_message.empty?
+  .row
+    %pre.error= error_message
 
 .row
   %div{role: 'tabpanel'}
@@ -11,14 +16,17 @@
       %li{ class: torrent_file ? '' : 'active' }
         %a{href: '#upload', role: 'tab', 'aria-controls' => 'upload', 'data-toggle' => 'tab'} I want to upload file and edit
       %li
+        %a{href: '#paste', role: 'tab', 'aria-controls' => 'upload', 'data-toggle' => 'tab'} I want to paste .torrent contents
+      %li
         %a{href: '#build', role: 'tab', 'aria-controls' => 'build', 'data-toggle' => 'tab'} I want to build a new file
       - if torrent_file
         %li.active
-          %a{href: '#edit', role: 'tab', 'aria-controls' => 'edit', 'data-toggle' => 'tab'} Edit my torrent file
+          %a{href: '#edit', role: 'tab', 'aria-controls' => 'edit', 'data-toggle' => 'tab'} Edit my input
 
 
     .tab-content
       .tab-pane#upload{role: 'tabpanel', class: torrent_file ? '' : 'active'}= haml :'index/upload_form'
-      .tab-pane.fade#build{role: 'tabpanel'}= haml :'index/build_form'
+      .tab-pane.fade#paste{role: 'tabpanel'}= haml :'index/paste_form'
+      .tab-pane.fade#build{role: 'tabpanel'}= haml :'index/edit_form', locals: { torrent_file: TorrentFile.new(parameters: {}) }
       - if torrent_file
         .tab-pane#edit.active{role: 'tabpanel'}= haml :'index/edit_form', locals: { torrent_file: torrent_file }

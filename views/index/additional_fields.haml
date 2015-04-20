@@ -1,0 +1,42 @@
+-# Nodes
+.form-group
+  .col-sm-2
+  %label.col-sm-2.right-aligned{ for: 'torrent_file[nodes]' } Nodes
+  .col-sm-6.template-container
+    - if torrent_file.nodes
+      - torrent_file.nodes.each do |node|
+        .row.bot-margin-1
+          .col-sm-12
+            %input.form-control{placeholder: '["IP or DNS", port]', type: 'text', name: 'torrent_file[nodes][]', value: node }
+    .row.template
+      .col-sm-12
+        %input.form-control{placeholder: '["IP or DNS", port]', type: 'text', name: 'torrent_file[nodes][]' }
+  .col-sm-2
+    %button.more-button.btn.btn-success +
+
+-# HTTP seeds
+.form-group
+  .col-sm-2
+  %label.col-sm-2.right-aligned{ for: 'torrent_file[httpseeds]' } HTTP Seeds
+  .col-sm-6.template-container
+    - if torrent_file.httpseeds
+      - torrent_file.httpseeds.each do |httpseed|
+        .row.bot-margin-1
+          .col-sm-12
+            %input.form-control{placeholder: "seed_url", type: 'text', name: 'torrent_file[httpseeds][]', value: httpseed }
+    .row.template
+      .col-sm-12
+        %input.form-control{placeholder: "seed_url", type: 'text', name: 'torrent_file[httpseeds][]' }
+  .col-sm-2
+    %button.more-button.btn.btn-success +
+
+-# Private
+.form-group
+  .col-sm-2
+  %label.col-sm-2.right-aligned{ for: 'torrent_file[private]' } Private
+  .col-sm-6
+    %label.radio-inline
+      %input{ type: 'radio', name: 'torrent_file[private]', value: 1, checked: torrent_file.private.to_i == 1 } Yes
+    %label.radio-inline
+      %input{ type: 'radio', name: 'torrent_file[private]', value: 0, checked: torrent_file.private.to_i == 0 } No
+  .col-sm-2

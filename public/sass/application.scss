@@ -29,9 +29,13 @@
 }
 
 .info-wrapper {
-
+  padding: 19px 0;
 }
 
 pre.error {
   color: red;
+}
+
+pre.success {
+  color: green;
 }

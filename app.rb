@@ -7,9 +7,14 @@ require 'open-uri'
 require 'haml'
 require 'base64'
 
+require_relative './lib/sanitizer'
+require_relative './lib/common_validations'
+require_relative './lib/torrent_file_validations'
 require_relative './lib/torrent_file'
 
 class UAWCSemifinal < Sinatra::Base
+  include Sanitizer
+
   run! if app_file == $0
 
   configure do
@@ -48,7 +53,7 @@ class UAWCSemifinal < Sinatra::Base
         contents = open(params['torrent_link']).read
         torrent_file = TorrentFile.new(raw_contents: contents)
       rescue => any_http_error
-        error_message = 'Unable to download file. Is the link correct?'
+        error_message = 'Unable to download the file. Is the link correct?'
       rescue BEncode::DecodeError
         error_message = 'File has been downloaded but is not a valid .torrent file'
       end
@@ -62,46 +67,38 @@ class UAWCSemifinal < Sinatra::Base
   end
 
   post '/build_torrent' do
-    # params transformations
-    %w(announce-list nodes).each do |array_attribute|
-      begin
-        params['torrent_file'][array_attribute].reject!(&:empty?)
-        params['torrent_file'][array_attribute].map! { |url_param| JSON.parse(url_param) }
-      rescue JSON::ParserError
-        error = "#{array_attribute} is invalid. Please, verify and re-submit"
+    torrent_file = TorrentFile.new(parameters: sanitize_form(params['torrent_file']))
+
+    if torrent_file.validation_errors.empty?
+      file_path = torrent_file.export
+      if params['delivery_type'] == 'email'
+        if params['email'] && !params['email'].empty?
+          torrent_file.email_file(file_path, params['email'])
+          locals = { success_message: 'Email has successfully been sent' }
+        else
+          locals = { error_message: 'The email is invalid', torrent_file: torrent_file }
+        end
+      else
+        send_file file_path, filename: File.basename(file_path), type: 'application/x-bittorrent'
+        return
       end
+    else
+      locals = { error_message: torrent_file.error_full_messages.join("\n"), torrent_file: torrent_file }
     end
 
+    haml :index, layout: :'layouts/application', locals: locals
+  end
+
+  post '/process_paste' do
     begin
-      params['torrent_file']['info']['files'].map! do |file_hash|
-        next if file_hash['length'].empty? || file_hash['path'].empty?
-        file_hash['path'] = JSON.parse(file_hash['path'])
-        file_hash['length'] = file_hash['length'].to_i
-        file_hash
-      end
-
-      params['torrent_file']['info']['files'].compact!
-    rescue JSON::ParserError
-      error = "info/files attribute is invalid. Please, verify and re-submit"
+      torrent_file = TorrentFile.new(raw_contents: params['pasted_contents'])
+      error_messages = torrent_file.error_full_messages.join("\n")
+    rescue BEncode::DecodeError
+      error_messages = 'The input specified is not a valid bit-torrent encoded string'
     end
 
-    params['torrent_file']['info']['length'] = params['torrent_file']['info']['length'].to_i
-
-    params['torrent_file']['info'].reject! do |key, value|
-      key == 'files' && value.empty? ||
-      key == 'length' && value == 0
-    end
-
-    params['torrent_file']['creation date'] = params['torrent_file']['creation date'].to_i
-    params['torrent_file']['info']['piece length'] = params['torrent_file']['info']['piece length'].to_i
-
-    # restore pieces
-    restored_pieces = Base64.decode64(params['torrent_file']['info']['pieces'])
-    params['torrent_file']['info']['pieces'] = restored_pieces
-
-    torrent_file = TorrentFile.new(parameters: params['torrent_file'])
-    file_path = torrent_file.export
-
-    send_file file_path, filename: File.basename(file_path), type: 'application/x-bittorrent'
+    haml :index, layout: :'layouts/application', locals: {
+      error_message: error_messages, torrent_file: torrent_file
+    }
   end
 end
