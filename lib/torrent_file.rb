@@ -85,8 +85,8 @@ class TorrentFile
       Mail.deliver do
         to recipient
         from 'uawc-torrent-tool@uawc-torrent-tool.com'
-        subject 'Your torrent files has successfully been generated'
-        body 'Your torrent files has successfully been generated'
+        subject 'Your torrent file has successfully been generated'
+        body 'Your torrent file has successfully been generated'
         attachments[File.basename(path)] = File.read(path)
       end
     rescue => exception
