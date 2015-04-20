@@ -30,6 +30,9 @@ LC_ALL=
 EOL
 source /etc/default/locale
 
+# hard reload the shell for locale changes to take effect
+/bin/bash
+
 echo 'Starting services'
 cd /opt/uawc-semifinal && ./restart_server.sh
 echo 'Puma started!'
